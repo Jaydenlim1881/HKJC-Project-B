@@ -2,6 +2,21 @@
 
 Utilities for working with Hong Kong Jockey Club horse data.
 
+## Installation
+
+Create and activate a virtual environment, then install the required
+dependencies:
+
+```bash
+python -m venv .venv
+source .venv/bin/activate  # On Windows use `.venv\Scripts\activate`
+pip install -r requirements.txt
+```
+
+This will install third-party packages such as `pandas`,
+`beautifulsoup4`, `selenium`, `ftfy` and `requests` that are used by the
+scrapers.
+
 ## `copy_dynamic_db.py`
 
 A one-time helper script that copies data from the legacy
