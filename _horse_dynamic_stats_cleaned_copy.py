@@ -4,7 +4,7 @@
 import sys
 sys.path.append('/Users/calvinlim13/miniforge3/lib/python3.12/site-packages')
 
-from utils import (
+from utils_copy import (
     log, sanitize_text, clean_placing, convert_finish_time,
     safe_int, safe_float, parse_weight, parse_lbw,
     get_distance_group, get_turn_count, get_draw_group,
