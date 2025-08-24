@@ -247,7 +247,7 @@ def build_weight_pref_from_dict(race_history_records, horse_id):
                 continue
                 
         race_history_records = converted_records
-        log("DEBUG", "Converted {len(converted_records)}/{len(race_history_records)} rows")
+        log("DEBUG", f"Converted {len(converted_records)}/{len(race_history_records)} rows")
         if converted_records:
             log("TRACE", "Sample converted record:", converted_records[0])
 
@@ -1197,7 +1197,8 @@ def create_weight_pref_table():
             Top3Rate REAL,
             Top3Count INTEGER,
             TotalRuns INTEGER,
-            LastUpdate TEXT
+            LastUpdate TEXT,
+            PRIMARY KEY (HorseID, Season, DistanceGroup, WeightGroup)
         )
     """)
     conn.commit()
@@ -1328,6 +1329,12 @@ def upsert_weight_pref(horse_id, weight_pref_list):
                     HorseID, Season, DistanceGroup, WeightGroup, CarriedWeight,
                     Top3Rate, Top3Count, TotalRuns, LastUpdate
                 ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+                ON CONFLICT(HorseID, Season, DistanceGroup, WeightGroup) DO UPDATE SET
+                    CarriedWeight = excluded.CarriedWeight,
+                    Top3Rate      = excluded.Top3Rate,
+                    Top3Count     = excluded.Top3Count,
+                    TotalRuns     = excluded.TotalRuns,
+                    LastUpdate    = excluded.LastUpdate;
             """, (
                 horse_id,
                 str(row['Season']),

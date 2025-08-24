@@ -24,8 +24,8 @@ def sanitize_text(text):
         text = str(text)
         text = re.sub(r'[^\x00-\x7F]+', '', text)
         return text.strip()
-    except:
-        return ""
+    except (TypeError, ValueError, re.error) as e:
+        log("DEBUG", "sanitize_text error", e)
 
 def clean_placing(placing_text):
     clean_text = sanitize_text(placing_text)
@@ -46,19 +46,22 @@ def convert_finish_time(time_str):
             return round(int(secs) + int(hundredths) / 100, 2)
         else:
             return None
-    except:
+    except (ValueError, TypeError) as e:
+        log("DEBUG", "convert_finish_time error", e)
         return None
 
 def safe_int(value):
     try:
         return int(value)
-    except:
+    except (ValueError, TypeError) as e:
+        log("DEBUG", "safe_int error", e)
         return None
 
 def safe_float(value):
     try:
         return float(value)
-    except:
+    except (ValueError, TypeError) as e:
+        log("DEBUG", "safe_float error", e)
         return None
 
 def parse_hkjc_date(date_str):
@@ -79,7 +82,8 @@ def parse_hkjc_date(date_str):
 def parse_weight(weight_str):
     try:
         return int(weight_str.replace("lb", "").strip())
-    except:
+    except (AttributeError, ValueError) as e:
+        log("DEBUG", "parse_weight error", e)
         return None
 
 def parse_lbw(lbw_str, placing):
@@ -88,7 +92,8 @@ def parse_lbw(lbw_str, placing):
         return 0.0
     try:
         return float(lbw_str)
-    except:
+    except (ValueError, TypeError) as e:
+        log("DEBUG", "parse_lbw error", e)
         return None
 
 def get_season_code(date_obj):
@@ -150,7 +155,8 @@ def get_distance_group_from_row(course_info, distance_str):
             race_course = parts[0].strip() if len(parts) > 0 else "Unknown"
             course_type = parts[2].strip() if len(parts) > 2 else "Turf"
         return get_distance_group(race_course, course_type, int(distance_str))
-    except:
+    except (ValueError, TypeError, AttributeError) as e:
+        log("DEBUG", "get_distance_group_from_row error", e)
         return "Unknown"
 
 # --- Turn geometry (CountTurn) helpers ---------------------------------------
@@ -197,7 +203,8 @@ def get_turn_count(race_course: str, surface: str, distance: int | str):
     """Return CountTurn as float; None if unmapped."""
     try:
         d = int(str(distance).strip())
-    except Exception:
+    except (ValueError, TypeError) as e:
+        log("DEBUG", "get_turn_count distance error", e)
         return None
     c = _norm_course(race_course)
     s = _norm_surface(surface)
@@ -257,7 +264,8 @@ def get_jump_type(previous_class, current_class):
             return "DOWN"
         else:
             return "SAME"
-    except:
+    except (ValueError, TypeError) as e:
+        log("DEBUG", "get_jump_type error", e)
         return "UNKNOWN"
 __all__ = [
     "log",
