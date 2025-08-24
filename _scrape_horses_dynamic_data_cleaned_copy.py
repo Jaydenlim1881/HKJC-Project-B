@@ -6,7 +6,7 @@ import sys
 import time
 import re
 from datetime import datetime
-from utils import (
+from utils_copy import (
     log, sanitize_text, clean_placing, convert_finish_time,
     get_distance_group, get_turn_count, get_draw_group,
     get_jump_type, get_distance_group_from_row, get_season_code,
