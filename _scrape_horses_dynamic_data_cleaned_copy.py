@@ -190,7 +190,7 @@ def upsert_dynamic_stats(
     ''')
 
     # Ensure Age column exists for backward compatibility
-    ensure_column_exists('hkjc_horses_dynamic.db', 'horse_dynamic_stats', 'Age', 'INTEGER')
+    ensure_column_exists(DB_PATH, 'horse_dynamic_stats', 'Age', 'INTEGER')
     num_recent_runs = len(recent_form)
     recent_form = (recent_form + [None] * 5)[:5]
     last_update = datetime.now().strftime("%Y/%m/%d %H:%M")
